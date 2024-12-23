@@ -1,21 +1,22 @@
 import { getKindeUser } from "@/server-actions/user-server-action";
+import { Dashboard } from "@/components/client/DashBoardPage";
+import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
+
 
 
 
 
 export default async function DashboardPage() {
-    const user = await getKindeUser()
+    const user = await getKindeUser() as KindeUser
 
     if(!user) {
         throw new Error("User not authenticated")
     }
 
     return (
-        <>
-        <div className="text-black">Hello {user.given_name}
-        <h1>{user.email}</h1>
-        </div>
-        </>
+       <>
+       <Dashboard user={user} />
+       </>
 
     ) 
 
