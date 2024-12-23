@@ -11,7 +11,12 @@ export default async function DashboardPage() {
     }
 
     return (
-        <div>Hello {user.given_name}</div>
+        <>
+        <div className="text-black">Hello {user.given_name}
+        <h1>{user.email}</h1>
+        </div>
+        </>
+
     ) 
 
 
