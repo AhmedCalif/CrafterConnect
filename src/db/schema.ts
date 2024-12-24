@@ -19,3 +19,14 @@ export const users = sqliteTable("users", {
   permissions: text("permissions"),
   roles: text("roles"),
 });
+
+
+export const media = sqliteTable("media", {
+  id: text("id").primaryKey().notNull(),
+  type: text("type").notNull(),
+  url: text("url").notNull(),
+  userId: text("user_id").notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+});

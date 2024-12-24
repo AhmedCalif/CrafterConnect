@@ -8,6 +8,13 @@
       "when": 1734135530917,
       "tag": "0000_amusing_cyclops",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1735009043352,
+      "tag": "0001_brainy_anthem",
+      "breakpoints": true
     }
   ]
 }
