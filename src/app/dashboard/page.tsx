@@ -1,5 +1,5 @@
 import { getKindeUser } from "@/server-actions/user-server-action";
-import { Dashboard } from "@/components/client/DashBoardPage";
+import { Dashboard } from "@/components/client/dashboard/DashBoardPage";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 
 

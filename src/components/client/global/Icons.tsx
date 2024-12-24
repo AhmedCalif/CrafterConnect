@@ -19,3 +19,4 @@ export const Icons = {
   menu: Menu,
   search: Search,
 };
+
