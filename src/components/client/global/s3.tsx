@@ -18,7 +18,7 @@ interface generateSignedURLProps {
   }>;
 }
 
-export function DeleteLater({ generateSignedURL }: generateSignedURLProps) {
+export function S3({ generateSignedURL }: generateSignedURLProps) {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
