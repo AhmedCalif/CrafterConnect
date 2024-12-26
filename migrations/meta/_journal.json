@@ -15,6 +15,13 @@
       "when": 1735009043352,
       "tag": "0001_brainy_anthem",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1735248175121,
+      "tag": "0002_pretty_gladiator",
+      "breakpoints": true
     }
   ]
 }

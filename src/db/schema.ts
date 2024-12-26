@@ -30,3 +30,23 @@ export const media = sqliteTable("media", {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
 });
+
+
+export const posts = sqliteTable("posts", {
+  id: text("id").primaryKey(),
+  content: text("content").notNull(),
+  author_id: text("author_id").references(() => users.id),
+  created_at: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  likes_count: integer("likes_count").notNull().default(0),
+});
+
+export const likes = sqliteTable("likes", {
+  id: text("id").primaryKey(),
+  post_id: text("post_id").references(() => posts.id),
+  user_id: text("user_id").references(() => users.id),
+  created_at: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+});
