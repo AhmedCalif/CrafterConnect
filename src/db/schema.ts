@@ -34,6 +34,7 @@ export const media = sqliteTable("media", {
 
 export const posts = sqliteTable("posts", {
   id: text("id").primaryKey(),
+  title: text("title").notNull(),
   content: text("content").notNull(),
   author_id: text("author_id").references(() => users.id),
   created_at: integer("created_at", { mode: "timestamp" })

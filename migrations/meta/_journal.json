@@ -22,6 +22,13 @@
       "when": 1735248175121,
       "tag": "0002_pretty_gladiator",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1735420968187,
+      "tag": "0003_flat_sentinel",
+      "breakpoints": true
     }
   ]
 }

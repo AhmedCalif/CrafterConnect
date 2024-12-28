@@ -16,6 +16,7 @@ export async function getPosts(): Promise<ServerActionResponse<typeof posts.$inf
     const getPostsFromDB = await db
       .select({
         id: posts.id,
+        title: posts.title,
         content: posts.content,
         author_id: posts.author_id,
         created_at: posts.created_at,
@@ -36,6 +37,7 @@ export async function getPosts(): Promise<ServerActionResponse<typeof posts.$inf
 
     const formattedPosts = getPostsFromDB.map(post => ({
       id: post.id,
+      title: post.title,
       content: post.content,
       author_id: post.author_id,
       created_at: post.created_at,
@@ -93,6 +95,7 @@ export async function createPosts({ input }: { input: CreatePostsInput }): Promi
       .insert(posts)
       .values({
         id: input.id,
+        title: input.title,
         author_id: user.id,
         content: input.content,
         created_at: new Date(),

@@ -1,9 +1,10 @@
 export interface CreatePostsInput {
+  title: string
   id: string;
   content: string;
   authorId: string;
   createdAt: Date
-  likesCount: Likes[]
+  likesCount: number
 }
 
 export interface Likes {

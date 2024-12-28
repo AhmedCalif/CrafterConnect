@@ -18,9 +18,9 @@ export function NavBar() {
         </Link>
       </Button>
       <Button variant="ghost" className="flex flex-col items-center">
-        <Link href={"/community"}>
+        <Link href={"/posts"}>
           <Icons.globe className="h-6 w-6" />
-          <span className="text-xs">Community</span>
+          <span className="text-xs">Posts</span>
         </Link>
       </Button>
       <Button variant="ghost" className="flex flex-col items-center">
