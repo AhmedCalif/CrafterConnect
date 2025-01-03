@@ -69,3 +69,29 @@ export async function syncKindeUserToDatabase(): Promise<User> {
 }
 
 
+export async function getSyncedUser() {
+  try {
+    const { getUser } = await getKindeServerSession();
+    const kindeUser = await getUser();
+    
+    if (!kindeUser) {
+      throw new Error("No authenticated user found");
+    }
+
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.auth_id, kindeUser.id))
+      .get()
+
+    if (!existingUser) {
+      const newUser = await syncKindeUserToDatabase();
+      return newUser;
+    }
+
+    return existingUser;
+  } catch (error) {
+    console.error("error getting the user from the db", error);
+    throw error;
+  }
+}

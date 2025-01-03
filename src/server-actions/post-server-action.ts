@@ -5,6 +5,7 @@ import { posts, users } from "@/db/schema";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { eq, and } from "drizzle-orm";
 import type { Post, CreatePostInput, UpdatePostInput} from "@/types/PostsTypes";
+import { syncKindeUserToDatabase } from "@/server-actions/user-server-action";
 
 type ServerActionResponse<T> = {
   data?: T;
@@ -94,8 +95,7 @@ export async function getPostsById(id: string): Promise<ServerActionResponse<typ
 
 export async function createPosts({ input }: { input: CreatePostInput }): Promise<ServerActionResponse<typeof posts.$inferSelect>> {
   try {
-    const { getUser } = await getKindeServerSession();
-    const user = await getUser();
+    const user = await syncKindeUserToDatabase();
 
     if (!user) {
       return { error: "Unauthorized" };

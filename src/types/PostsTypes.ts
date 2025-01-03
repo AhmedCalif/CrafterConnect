@@ -14,6 +14,7 @@ export interface Post {
 export type CreatePostInput = Omit<Post,  | 'timestamp' | 'author' | 'likesCount'> & {
   id: string;
   authorId: string;
+  createdAt: Date
 };
 
 export interface UpdatePostInput {

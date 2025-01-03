@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { createPosts } from "@/server-actions/post-server-action";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import type { CreatePostsInput } from "@/types/PostsTypes";
+import type { CreatePostInput } from "@/types/PostsTypes";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import type { User } from "@/types/UserTypes";
 
@@ -16,13 +16,12 @@ export function CreatePost({user}: {user: User}) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<CreatePostsInput>({
+  const [formData, setFormData] = useState<CreatePostInput>({
     id: crypto.randomUUID(),
     title: "",
     content: "",
     authorId: user.id,
     createdAt: new Date(),
-    likesCount: 0
   });
 
   const handleInputChange = (
