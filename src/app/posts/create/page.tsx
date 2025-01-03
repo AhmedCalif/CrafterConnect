@@ -1,16 +1,15 @@
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { CreatePost } from "@/components/client/posts/CreatePost";
+import { syncKindeUserToDatabase } from "@/server-actions/user-server-action";
 
 
 export default async function CreatePostPage() {
-  const {getUser} = await getKindeServerSession()
-  const user = await getUser();
+  const user = await syncKindeUserToDatabase()
 
-  if (!user) {
+  if (user === null) {
     throw new Error("User is not logged in")
   }
 
   return (
-    <CreatePost />
+    <CreatePost user={user} />
   )
 }

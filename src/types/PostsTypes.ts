@@ -1,11 +1,26 @@
-export interface CreatePostsInput {
-  title: string
+export interface Post {
   id: string;
+  title: string;
   content: string;
   authorId: string;
-  createdAt: Date
-  likesCount: number
+  likesCount: number;
+  timestamp: Date;
+  author: {
+    name: string;
+    avatar: string;
+  };
 }
+
+export type CreatePostInput = Omit<Post,  | 'timestamp' | 'author' | 'likesCount'> & {
+  id: string;
+  authorId: string;
+};
+
+export interface UpdatePostInput {
+  id: string;
+  content: string;
+}
+
 
 export interface Likes {
   id: string;
@@ -13,13 +28,3 @@ export interface Likes {
   userId: string
   createdAt: Date;
 }
-
-
-export interface UpdatePostsInput {
-  id: string;
-  content: string;
-  authorId: string;
-  updatedAt: Date;
-  likesCount: Likes[]
-}
-

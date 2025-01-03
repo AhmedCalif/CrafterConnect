@@ -5,11 +5,11 @@ import { NavBar } from "@/components/client/global/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
+import { User } from "@/types/UserTypes";
 import { useState } from "react";
 
 interface UserProps {
-  user: KindeUser;
+  user: User;
 }
 
 export function Dashboard({ user }: UserProps) {

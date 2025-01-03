@@ -9,66 +9,40 @@ import { Search, Plus, Loader2 } from "lucide-react";
 import { NavBar } from "@/components/client/global/Navbar";
 import Link from "next/link";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { type Post } from '@/types/PostsTypes';
 
-const posts = [
-  {
-    id: 1,
-    author: {
-      name: "Joe",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    title: "Bathroom Painting DIY",
-    timestamp: new Date("2024-01-26T10:00:00"),
-    content: "Sharing my recent bathroom renovation project. Started with a fresh coat of paint...",
-    likes: 24,
-    comments: 8,
-    tags: ["DIY", "Home Improvement"]
-  },
-  {
-    id: 2,
-    author: {
-      name: "Darrell",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    title: "Home Improvement Tips",
-    timestamp: new Date("2024-01-26T09:30:00"),
-    content: "Here's a comprehensive DIY project guide for improving your home...",
-    likes: 15,
-    comments: 5,
-    tags: ["Tips", "Home Improvement"]
-  },
-  {
-    id: 3,
-    author: {
-      name: "Bradley",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    title: "Seasonal DIY Projects",
-    timestamp: new Date("2024-01-26T09:00:00"),
-    content: "Get ready for seasonal DIY projects! Perfect for spring decorations...",
-    likes: 32,
-    comments: 12,
-    tags: ["Seasonal", "DIY"]
-  },
-];
-
-
-export function PostsPageComponent() {
+export function PostsPageComponent({ posts }: { posts: Post[]}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [showAlert] = useState(false);
 
-  const filteredPosts = posts.filter(post =>
+  const filteredPosts: Post[] = posts.filter(post => 
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+    post.content.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
 
   const handleTabChange = (value: string) => {
     setIsLoading(true);
     setActiveTab(value);
     setTimeout(() => setIsLoading(false), 500);
+  };
+
+  const renderPostsList = () => {
+    if (filteredPosts.length === 0) {
+      return (
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-muted-foreground">No posts found matching your search</p>
+        </div>
+      );
+    }
+
+    return filteredPosts.map((post) => (
+      <PostCard 
+        key={post.id} 
+        {...post}  
+      />
+    ));
   };
 
   return (
@@ -102,7 +76,7 @@ export function PostsPageComponent() {
       <Tabs value={activeTab} onValueChange={handleTabChange} className="mb-8">
         <TabsList className="w-full justify-start">
           <TabsTrigger value="all" className="flex-1">
-            All Posts ({posts.length})
+            All Posts ({filteredPosts.length})
           </TabsTrigger>
           <TabsTrigger value="invited" className="flex-1">
             Invited
@@ -119,18 +93,7 @@ export function PostsPageComponent() {
         ) : (
           <>
             <TabsContent value="all" className="mt-6 space-y-4">
-              {filteredPosts.length > 0 ? (
-                filteredPosts.map((post) => (
-                  <PostCard 
-                    key={post.id} 
-                    {...post}  
-                  />
-                ))
-              ) : (
-                <div className="text-center py-12 bg-gray-50 rounded-lg">
-                  <p className="text-muted-foreground">No posts found matching your search</p>
-                </div>
-              )}
+              {renderPostsList()}
             </TabsContent>
 
             <TabsContent value="invited" className="mt-6">

@@ -4,14 +4,14 @@ import { db } from "@/db";
 import { posts, users } from "@/db/schema";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { eq, and } from "drizzle-orm";
-import type { CreatePostsInput, UpdatePostsInput } from "@/types/PostsTypes";
+import type { Post, CreatePostInput, UpdatePostInput} from "@/types/PostsTypes";
 
 type ServerActionResponse<T> = {
   data?: T;
   error?: string;
 };
 
-export async function getPosts(): Promise<ServerActionResponse<typeof posts.$inferSelect[]>> {
+export async function getPosts(): Promise<ServerActionResponse<Post[]>> {
   try {
     const getPostsFromDB = await db
       .select({
@@ -19,8 +19,8 @@ export async function getPosts(): Promise<ServerActionResponse<typeof posts.$inf
         title: posts.title,
         content: posts.content,
         author_id: posts.author_id,
-        created_at: posts.created_at,
         likes_count: posts.likes_count,
+        created_at: posts.created_at,
         user: {
           id: users.id,
           email: users.email,
@@ -32,22 +32,32 @@ export async function getPosts(): Promise<ServerActionResponse<typeof posts.$inf
       .leftJoin(users, eq(posts.author_id, users.id));
 
     if (!getPostsFromDB.length) {
-      return { error: "No posts found in the database" };
+      throw new Error("No posts in the database")
     }
 
-    const formattedPosts = getPostsFromDB.map(post => ({
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      author_id: post.author_id,
-      created_at: post.created_at,
-      likes_count: post.likes_count
-    }));
+    const formattedPosts: Post[] = getPostsFromDB.map((post): Post => {
+      const authorName = post.user 
+        ? `${post.user.given_name} ${post.user.family_name}`.trim()
+        : 'Unknown User';
+        
+      return {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        authorId: post.author_id ?? '',
+        likesCount: post.likes_count ?? 0,
+        timestamp: post.created_at,
+        author: {
+          name: authorName,
+          avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${authorName}`
+        }
+      };
+    });
 
-    return { data: formattedPosts };
+    return {data: formattedPosts};
   } catch (error) {
     console.error("Error getting posts:", error);
-    return { error: "Failed to fetch posts" };
+    return {error: "error getting posts"}
   }
 }
 
@@ -82,7 +92,7 @@ export async function getPostsById(id: string): Promise<ServerActionResponse<typ
   }
 }
 
-export async function createPosts({ input }: { input: CreatePostsInput }): Promise<ServerActionResponse<typeof posts.$inferSelect>> {
+export async function createPosts({ input }: { input: CreatePostInput }): Promise<ServerActionResponse<typeof posts.$inferSelect>> {
   try {
     const { getUser } = await getKindeServerSession();
     const user = await getUser();
@@ -114,7 +124,7 @@ export async function updatePosts({
   input 
 }: { 
   id: string; 
-  input: UpdatePostsInput 
+  input: UpdatePostInput 
 }): Promise<ServerActionResponse<typeof posts.$inferSelect>> {
   try {
     const { getUser } = await getKindeServerSession();
